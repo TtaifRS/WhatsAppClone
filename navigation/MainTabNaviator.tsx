@@ -24,7 +24,7 @@ export default function MainTabNavigator() {
           backgroundColor: Colors[colorScheme].tint
         },
         indicatorStyle:{
-          backgroundColor: Colors[colorScheme].background,
+          backgroundColor: Colors[colorScheme].text,
           height: 4
         },
         labelStyle: {
