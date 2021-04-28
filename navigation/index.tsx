@@ -1,7 +1,7 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { ColorSchemeName } from 'react-native';
+import { ColorSchemeName, Image } from 'react-native';
 import Colors from '../constants/Colors';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -9,7 +9,7 @@ import { RootStackParamList } from '../types';
 import MainTabNavigator from './MainTabNaviator';
 import LinkingConfiguration from './LinkingConfiguration';
 
-import {Octicons, MaterialCommunityIcons} from "@expo/vector-icons"
+import {Octicons, MaterialCommunityIcons, MaterialIcons, FontAwesome5} from "@expo/vector-icons"
 import { View } from '../components/Themed';
 import ChatScreen from '../screens/ChatScreen';
 
@@ -64,7 +64,32 @@ function RootNavigator() {
       }} />
       <Stack.Screen name="ChatRoom" component={ChatScreen} 
         options={({route})=>({
-          title: route.params.name
+          
+          title: route.params.name,headerStyle: {
+            backgroundColor: '#0c6157', //Set Header color
+          },
+          headerTintColor: Colors.dark.text, //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+          headerLeft: ()=>(
+            <Image source={{uri: route.params.uri }} style={{width: 50, height: 50, borderRadius: 50, marginLeft: 15}}/>
+          ),
+          headerRight: ()=>(
+            <View
+            style={{
+              flexDirection:"row", 
+              backgroundColor:"#0c6157", 
+              width: 100, 
+              justifyContent: 'space-between', 
+              marginRight: 10
+            }}>
+            <MaterialIcons name="call" color={'white'} size={22}/>
+            <FontAwesome5 name="video" color={'white'} size={22}/>
+            <MaterialCommunityIcons name="dots-vertical" color={'white'} size={22}/>
+          </View>
+          )
+          
         })} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
