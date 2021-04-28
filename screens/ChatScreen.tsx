@@ -4,6 +4,7 @@ import {useRoute} from "@react-navigation/native"
 import ChatMessages from '../components/ChatMessages';
 import chatData from "../data/Chats"
 import BG from "../assets/images/BG.jpg"
+import InputBox from '../components/InputBox';
 const ChatScreen = () => {
     const route = useRoute();
 
@@ -16,6 +17,7 @@ const ChatScreen = () => {
             )}
             
         />
+        <InputBox/>
         </ImageBackground>
         
         
