@@ -65,6 +65,7 @@ export default {
 		user: {
 			id: 'u1',
 			name: 'Taif',
-		},
+		}, 
+		
 	}]
 }
