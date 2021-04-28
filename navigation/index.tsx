@@ -11,6 +11,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 
 import {Octicons, MaterialCommunityIcons} from "@expo/vector-icons"
 import { View } from '../components/Themed';
+import ChatScreen from '../screens/ChatScreen';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -61,6 +62,7 @@ function RootNavigator() {
           </View>
         )
       }} />
+      <Stack.Screen name="ChatRoom" component={ChatScreen} options={{ title: 'Chat Room' }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
   );
