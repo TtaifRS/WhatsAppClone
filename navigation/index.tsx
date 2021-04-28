@@ -62,7 +62,10 @@ function RootNavigator() {
           </View>
         )
       }} />
-      <Stack.Screen name="ChatRoom" component={ChatScreen} options={{ title: 'Chat Room' }} />
+      <Stack.Screen name="ChatRoom" component={ChatScreen} 
+        options={({route})=>({
+          title: route.params.name
+        })} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
   );
