@@ -61,7 +61,7 @@ function App() {
           status: "Hey, I'm here"
         }
 
-        console.log(newUser)
+       
        
         await API.graphql(
           graphqlOperation(
