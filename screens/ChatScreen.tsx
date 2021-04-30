@@ -17,7 +17,7 @@ const ChatScreen = () => {
             )}
             
         />
-        <InputBox/>
+        <InputBox chatRoomID = {route.params.id}/>
         </ImageBackground>
         
         
