@@ -7,24 +7,26 @@ import InputBox from '../components/InputBox';
 import API, { graphqlOperation } from '@aws-amplify/api';
 import { messagesByChatRoom } from '../src/graphql/queries';
 import Auth from '@aws-amplify/auth';
+import { onCreateMessage } from '../src/graphql/subscriptions';
 const ChatScreen = () => {
     const route = useRoute();
     const [messages, setMessages] = useState([])
     const [myId, setMyId] = useState(null)
-    console.log(route.params.id)
-    useEffect(() => {
-        const fetchMessages = async () => {
-            const messagesData = await API.graphql(
-                graphqlOperation(
-                    messagesByChatRoom, {
-                        chatRoomID: route.params.id,
-                        sortDirection : "DESC"
-                    }
-                )
-            )
+    
 
-            setMessages(messagesData.data.messagesByChatRoom.items)
-        }
+    const fetchMessages = async () => {
+        const messagesData = await API.graphql(
+            graphqlOperation(
+                messagesByChatRoom, {
+                    chatRoomID: route.params.id,
+                    sortDirection : "DESC"
+                }
+            )
+        )
+
+        setMessages(messagesData.data.messagesByChatRoom.items)
+    }
+    useEffect(() => {
         fetchMessages()
     }, [])
 
@@ -36,6 +38,33 @@ const ChatScreen = () => {
 
         getMyId()
     }, [])
+
+    useEffect (() => {
+       const subscription = API.graphql(
+           graphqlOperation(
+               onCreateMessage
+           )
+       ).subscribe({
+           next: (data) => {
+               const newMessage = data.value.data.onCreateMessage 
+               if(newMessage.chatRoomID !== route.params.id){
+                   console.log("message in another room")
+                   return
+               }
+               
+
+               fetchMessages()
+           }
+
+           
+
+       })
+       return () => subscription.unsubscribe();
+    }, [])
+
+    if(!myId){
+        return null
+    }
 
     return (
         <ImageBackground style={{width:"100%", height: "100%"}} source={BG}>

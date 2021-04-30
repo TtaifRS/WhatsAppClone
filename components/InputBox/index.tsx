@@ -3,7 +3,7 @@ import Auth from '@aws-amplify/auth'
 import { Entypo, FontAwesome5, Fontisto, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { createMessage } from '../../src/graphql/mutations'
+import { createMessage, updateChatRoom } from '../../src/graphql/mutations'
 import styles from './style'
 
 const InputBox = (props) => {
@@ -25,9 +25,30 @@ const InputBox = (props) => {
     const onMicroPhonePress =()=>{
         console.warn("microphone")
     }
-    const onSendPress = async () => {
+
+    const updateChatRoomLastMessage = async (messageId: string) =>{
         try{
             await API.graphql(
+                graphqlOperation(
+                    updateChatRoom, {
+                        input: {
+                            id: chatRoomID,
+                            lastMessageID: messageId
+                        }
+                    }
+                )
+            )
+        }catch(e){
+            console.log(e)
+        }
+    }
+
+
+    const onSendPress = async () => {
+
+
+        try{
+            const newMessageData = await API.graphql(
                 graphqlOperation(
                     createMessage, {
                         input: {
@@ -39,10 +60,13 @@ const InputBox = (props) => {
                 )
             )
             setMessage('')
+            await updateChatRoomLastMessage(newMessageData.data.createMessage.id)
         }catch(e){
 
         }
     }
+
+    
     const onPress = () =>{
         if (!message){
             onMicroPhonePress();

@@ -19,19 +19,27 @@ const ChatListItem = (props: ChatListItemProps) => {
 
     
 
+    
+
     useEffect(()=>{
         const getOtherUser = async () => {
-            const userInfo = await Auth.currentAuthenticatedUser();
+            try{
+                const userInfo = await Auth.currentAuthenticatedUser();
             if(chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub){
                 setOtherUser(chatRoom.chatRoomUsers.items[1].user)
             }else{
                 setOtherUser(chatRoom.chatRoomUsers.items[0].user)
             }
+            }catch(e){
+                console.log(e)
+            }
         }
         getOtherUser()
     }, [])
  
-
+    if(!otherUser){
+        return null
+    }
     const onClick = ()=>{
         navigation.navigate('ChatRoom', 
             {id: chatRoom.id, 
@@ -40,9 +48,7 @@ const ChatListItem = (props: ChatListItemProps) => {
         )
     }
 
-    if(!otherUser){
-        return null
-    }
+    
 
     return (
        <TouchableWithoutFeedback onPress={onClick}>
@@ -51,7 +57,12 @@ const ChatListItem = (props: ChatListItemProps) => {
                 <Image source={{uri: otherUser.imageUri }} style={styles.avatar}/>
                 <View style={styles.midContainer}>
                     <Text style={styles.userName}>{otherUser.name}</Text>
-                    <Text style={styles.lastMessage} numberOfLines={1} ellipsizeMode="tail">{chatRoom.lastMessage ? chatRoom.lastMessage.content : ''}</Text>
+                    <Text 
+                        style={styles.lastMessage} 
+                        numberOfLines={1} 
+                        ellipsizeMode="tail">
+                            {chatRoom.lastMessage ? `${chatRoom.lastMessage.user.name}: ${chatRoom.lastMessage.content}` : ''}
+                            </Text>
                 </View>   
             </View>
             <Text style={styles.time}>{chatRoom.lastMessage && moment(chatRoom.lastMessage.createdAt).format("DD/MM/YYYY")}</Text>

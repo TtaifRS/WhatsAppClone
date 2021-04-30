@@ -60,7 +60,7 @@ const contactList = (props: contactListProps) => {
                 }
             )
         )
-
+                
 
         navigation.navigate('ChatRoom', {
             id: newChatRoom.id,
