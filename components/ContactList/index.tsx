@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native'
 import API, { graphqlOperation } from '@aws-amplify/api'
 import { createChatRoom, createChatRoomUser } from '../../src/graphql/mutations'
 import Auth from '@aws-amplify/auth'
+import { getChatRoomUser } from '../../src/graphql/queries'
 
 export type contactListProps = {
     user: User
@@ -54,11 +55,18 @@ const contactList = (props: contactListProps) => {
                 createChatRoomUser, {
                     input: {
                         userID: userInfo.attributes.sub,
-                    chatRoomID: newChatRoom.id
+                        chatRoomID: newChatRoom.id
                     }
                 }
             )
         )
+
+
+        navigation.navigate('ChatRoom', {
+            id: newChatRoom.id,
+            name: "Hardcoded name",
+            uri: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5f/5ffe57ba05a3ca1d622c4e9c2fc054db3add2f71_full.jpg"
+        })
 
        }catch(e){
         console.log(e)
